@@ -1,0 +1,51 @@
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <vector>
+
+using std::vector;
+using std::string;
+using std::isspace;
+using std::cout;
+using std::cin;
+using std::endl;
+
+vector<string> split(const string& s) {
+	vector<string> ret;
+	typedef string::size_type string_size;
+	string_size i = 0;
+
+	while (i != s.size()) {
+		//ignore leading blanks
+		//invariant: characters in range [original i, current i] are all spaces
+		while (i != s.size() && isspace(s[i]))
+			++i;
+		//find end of next word
+		string_size j = i;
+		//invariant: none of the characters in range [original j, current j) is a space 
+		while (j != s.size() && !isspace(s[j]))
+			++j;
+		if (i != j) {
+			//copy from s starting from i to j
+			ret.push_back(s.substr(i, j-i));
+			i = j;
+		}
+	}
+	return ret;
+}
+
+
+int main() {
+	string s;
+	while(getline(cin,s)) {
+		vector<string> v = split(s);
+
+		for (vector<string>::size_type i = 0; i != v.size(); ++i)
+			cout << v[i] <<endl;
+	
+	}
+
+	return 0;
+
+}
