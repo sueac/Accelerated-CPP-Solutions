@@ -1,0 +1,14 @@
+#include "Student_info.h"
+
+
+int main() {
+	
+	Student_info student;
+
+	if (student.valid()) {
+		student.grade();
+
+	}
+
+
+}
