@@ -2,6 +2,7 @@
 #define GUARD_Vec
 
 #include <memory>
+#include <algorithm>
 
 
 template <class T> class Vec {
@@ -42,6 +43,17 @@ public:
 			grow();
 		unchecked_append(val);	//append the new element
 	}
+
+	void clear() {
+		uncreate();
+	}
+
+	iterator erase(iterator);
+	iterator erase(iterator, iterator);
+	
+	bool empty() const { return data == avail; }
+
+
 private:
 	//implementation
 	iterator data;	// first element in the Vec
@@ -132,3 +144,25 @@ template <class T> void Vec<T>::unchecked_append(const T& val) {
 }
 
 
+template <class T> typename Vec<T>::iterator Vec<T>::erase(iterator it)
+{
+	return erase(it, it+1);
+}
+
+
+template <class T> typename Vec<T>::iterator Vec<T>::erase(iterator b, iterator e)
+{
+	if (b == e)
+		return b;
+
+	iterator new_avail = std::copy(e, avail, b);
+
+	iterator it = avail;
+	while (it != new_avail)
+		alloc.destroy(--it);
+
+	avail = new_avail;
+	return b;
+}
+
+#endif
